@@ -1,45 +1,65 @@
 #!/usr/bin/env python
-from __future__ import print_function
-from Getch import _Getch
 from time import sleep
 from sys import exit
 import os
-
+import curses
+import signal
+import pdb
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 number = "1234567890"
 symbol = "~!@#$%^&*()_+{}|:\"<>?-=[]\;',./`"
 
+stdscr = curses.initscr()
+
 def clear():
-  os.system('clear') #Currently, only linux
+  stdscr.clear()
+
+def println(string):
+  stdscr.addstr(0,0,string+'\n');
+  stdscr.refresh()
 
 def getch():
-  _getch = _Getch()
-  return _getch()
+  return stdscr.getch()
 
 def test(string):
   clear()
-  print(string)
+  println(string)
   ch = getch()
   h = 0
   string_len = len(string)
-
   while True:
-    if ch == '\x03': # Ctrl+C
-      print("Ctrl-C: Forced exit")
-      exit()
-    if h == string_len - 1 and ch == string[-1]: #Pass
+    if h == string_len - 1 and ch == ord(string[-1]): #Pass
       break
-    elif ch == string[h]:
-      print(ch,end="")
+    elif ch == ord(string[h]):
+      stdscr.addch(1,h,ch)
+      stdscr.refresh()
       h += 1
     else:
       clear()
-      print(string)
+      println(string)
       h = 0 
     ch = getch()
 
+def init_screen():
+  curses.cbreak()
+  stdscr.keypad(1)
+    
+def deinit_screen():
+  curses.nocbreak()
+  stdscr.keypad(0)
+  curses.echo()
+  curses.endwin()
+
+def signal_handler(sig, frame):
+  println("Forced to exit by Ctrl-C")
+  sleep(1)
+  deinit_screen()
+  exit(0)
+
 if __name__ == "__main__":
+  signal.signal(signal.SIGINT,signal_handler)
+  init_screen()
   test(alphabet)
   test(alphabet.upper())
   test(alphabet[::-1])
@@ -49,5 +69,7 @@ if __name__ == "__main__":
   test(symbol)
   test(symbol[::-1])
   clear()
-  print("\nPass")
+  println("Pass")
   sleep(1)
+  deinit_screen() 
+
