@@ -3,8 +3,8 @@ from time import sleep
 from sys import exit
 import os
 import curses
-import signal
 import pdb
+import random
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 number = "1234567890"
@@ -51,15 +51,7 @@ def deinit_screen():
   curses.echo()
   curses.endwin()
 
-def signal_handler(sig, frame):
-  println("Forced to exit by Ctrl-C")
-  sleep(1)
-  deinit_screen()
-  exit(0)
-
-if __name__ == "__main__":
-  signal.signal(signal.SIGINT,signal_handler)
-  init_screen()
+def test_by_sequence():
   test(alphabet)
   test(alphabet.upper())
   test(alphabet[::-1])
@@ -68,8 +60,29 @@ if __name__ == "__main__":
   test(number[::-1])
   test(symbol)
   test(symbol[::-1])
+
+def test_by_random():
+  a = alphabet+alphabet.upper()
+  n = number+symbol
+  test(''.join(random.sample(a,26)))
+  test(''.join(random.sample(n,26)))
+  test(''.join(random.sample(a+n, 26)))
+
+
+def main():
+  init_screen()
+  test_by_random()
   clear()
   println("Pass")
   sleep(1)
   deinit_screen() 
 
+
+if __name__ == "__main__":
+  try:
+    main()
+  except KeyboardInterrupt:
+    println("Forced to exit by Ctrl-C")
+    sleep(1)
+    deinit_screen()
+    exit(0)
