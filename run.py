@@ -71,6 +71,7 @@ def test_by_random():
 
 def main():
   init_screen()
+  test_by_sequence()
   test_by_random()
   clear()
   println("Pass")
