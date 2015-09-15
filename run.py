@@ -1,72 +1,69 @@
 #!/usr/bin/env python
 from time import sleep
-from sys import exit
-import os
 import curses
-import pdb
 import random
 
-alphabet = "abcdefghijklmnopqrstuvwxyz"
-number = "1234567890"
-symbol = "~!@#$%^&*()_+{}|:\"<>?-=[]\;',./`"
+ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+NUMBER = "1234567890"
+SYMBOL = "~!@#$%^&*()_+{}|:\"<>?-=[]\;',./`"
 
-stdscr = curses.initscr()
+STDSCR = curses.initscr()
 
 def clear():
-    stdscr.clear()
+    STDSCR.clear()
 
 def println(string):
-    stdscr.addstr(0,0,string+'\n');
-    stdscr.refresh()
+    STDSCR.addstr(0, 0, string+'\n')
+    STDSCR.refresh()
 
 def getch():
-    return stdscr.getch()
+    return STDSCR.getch()
 
 def test(string):
     clear()
     println(string)
-    ch = getch()
-    h = 0
+    cha = getch()
+    header = 0
     string_len = len(string)
     while True:
-        if h == string_len - 1 and ch == ord(string[-1]): #Pass
+        if header == string_len - 1 and cha == ord(string[-1]): #Pass
             break
-        elif ch == ord(string[h]):
-            stdscr.addch(1,h,ch)
-            stdscr.refresh()
-            h += 1
+        elif cha == ord(string[header]):
+            STDSCR.addch(1, header, cha)
+            STDSCR.refresh()
+            header += 1
         else:
             clear()
             println(string)
-            h = 0
-        ch = getch()
+            header = 0
+        cha = getch()
 
 def init_screen():
     curses.cbreak()
-    stdscr.keypad(1)
+    STDSCR.keypad(1)
 
 def deinit_screen():
     curses.nocbreak()
-    stdscr.keypad(0)
+    STDSCR.keypad(0)
     curses.echo()
     curses.endwin()
 
 def test_by_sequence():
-    test(alphabet)
-    test(alphabet.upper())
-    test(alphabet[::-1])
-    test(alphabet[::-1].upper())
-    test(number)
-    test(number[::-1])
-    test(symbol)
-    test(symbol[::-1])
+    test(ALPHABET)
+    test(ALPHABET.upper())
+    test(ALPHABET[::-1])
+    test(ALPHABET[::-1].upper())
+    test(NUMBER)
+    test(NUMBER[::-1])
+    test(SYMBOL)
+    test(SYMBOL[::-1])
 
 def test_by_random():
-    a = alphabet+alphabet.upper()
-    n = number+symbol
-    test(''.join(random.sample(a,26)))
-    test(''.join(random.sample(n,26)))
-    test(''.join(random.sample(a+n, 26)))
+    alpha = ALPHABET+ALPHABET.upper()
+    num = NUMBER+SYMBOL
+    test(''.join(random.sample(alpha, 26)))
+    test(''.join(random.sample(num, 26)))
+    test(''.join(random.sample(alpha + num, 26)))
 
 
 def main():
