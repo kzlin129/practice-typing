@@ -2,7 +2,7 @@
 from __future__ import print_function
 from Getch import _Getch
 from time import sleep
-from profilehooks import profile
+from profile import * 
 import random
 import os
 
