@@ -1,52 +1,40 @@
 #!/usr/bin/env python
+from __future__ import print_function
+from Getch import _Getch
 from time import sleep
-import curses
+from profile import * 
 import random
+import os
 
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 NUMBER = "1234567890"
 SYMBOL = "~!@#$%^&*()_+{}|:\"<>?-=[]\;',./`"
 
-STDSCR = curses.initscr()
 
 def clear():
-    STDSCR.clear()
-
-def println(string):
-    STDSCR.addstr(0, 0, string+'\n')
-    STDSCR.refresh()
+    os.system('clear') #Currently, only linux
 
 def getch():
-    return STDSCR.getch()
+    _getch = _Getch()
+    return _getch()
 
 def test(string):
     clear()
-    println(string)
+    print(string)
     cha = getch()
     header = 0
     string_len = len(string)
     while True:
-        if header == string_len - 1 and cha == ord(string[-1]): #Pass
+        if header == string_len - 1 and cha == string[-1]: #Pass
             break
-        elif cha == ord(string[header]):
-            STDSCR.addch(1, header, cha)
-            STDSCR.refresh()
+        elif cha == string[header]:
+            print(cha, end="")
             header += 1
         else:
             clear()
-            println(string)
+            print(string)
             header = 0
         cha = getch()
-
-def init_screen():
-    curses.cbreak()
-    STDSCR.keypad(1)
-
-def deinit_screen():
-    curses.nocbreak()
-    STDSCR.keypad(0)
-    curses.echo()
-    curses.endwin()
 
 def test_by_sequence():
     test(ALPHABET)
@@ -65,22 +53,21 @@ def test_by_random():
     test(''.join(random.sample(num, 26)))
     test(''.join(random.sample(alpha + num, 26)))
 
-
+@profile
 def main():
-    init_screen()
     test_by_sequence()
     test_by_random()
     clear()
-    println("Pass")
+    print("Pass")
     sleep(1)
-    deinit_screen()
 
 
 if __name__ == "__main__":
     try:
         main()
+	print_prof_data()
+	clear_prof_data()
     except KeyboardInterrupt:
-        println("Forced to exit by Ctrl-C")
+        print("Forced to exit by Ctrl-C")
         sleep(1)
-        deinit_screen()
         exit(0)
