@@ -25,7 +25,10 @@ def test(string):
     header = 0
     string_len = len(string)
     while True:
-        if header == string_len - 1 and cha == string[-1]: #Pass
+        if cha == '\x03': #Ctrl-C
+            print("Ctrl-C: Forced exit")
+            exit()
+        elif header == string_len - 1 and cha == string[-1]: #Pass
             break
         elif cha == string[header]:
             print(cha, end="")
@@ -65,8 +68,8 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-	print_prof_data()
-	clear_prof_data()
+        print_prof_data()
+        clear_prof_data()
     except KeyboardInterrupt:
         print("Forced to exit by Ctrl-C")
         sleep(1)
