@@ -7,7 +7,7 @@ import random
 import os
 
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
-NUMBER = "1234567890"
+NUMBER = "0123456789"
 SYMBOL = "~!@#$%^&*()_+{}|:\"<>?-=[]\;',./`"
 
 
