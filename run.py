@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 from __future__ import print_function
-from Getch import _Getch
 from time import sleep
 from profile import * 
 import random
 import os
+if os.name == "nt":
+    import msvcrt
+else:
+    from Getch import _Getch
 
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 NUMBER = "0123456789"
@@ -12,16 +15,24 @@ SYMBOL = "~!@#$%^&*()_+{}|:\"<>?-=[]\;',./`"
 
 
 def clear():
-    os.system('clear') #Currently, only linux
+    if os.name == "nt":
+        os.system('cls')
+    else:
+        os.system('clear')
 
 def getch():
-    _getch = _Getch()
-    return _getch()
+    if os.name == "nt":
+        return msvcrt.getche()
+    else:
+        _getch = _Getch()
+        return _getch()
 
 def test(string):
     clear()
     print(string)
     cha = getch()
+    if os.name == "nt":
+        cha = cha.decode("utf-8")
     header = 0
     string_len = len(string)
     while True:
@@ -31,13 +42,16 @@ def test(string):
         elif header == string_len - 1 and cha == string[-1]: #Pass
             break
         elif cha == string[header]:
-            print(cha, end="")
+            if os.name != "nt":
+                print(cha, end="")
             header += 1
         else:
             clear()
             print(string)
             header = 0
         cha = getch()
+        if os.name == "nt":
+            cha  = cha.decode("utf-8")
 
 def test_by_sequence():
     test(ALPHABET)
