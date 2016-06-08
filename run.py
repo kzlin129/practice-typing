@@ -83,6 +83,7 @@ if __name__ == "__main__":
     try:
         main()
         print_prof_data()
+        sleep(3)
         clear_prof_data()
     except KeyboardInterrupt:
         print("Forced to exit by Ctrl-C")
