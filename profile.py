@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Refer to http://stackoverflow.com/questions/3620943/measuring-elapsed-time-with-the-time-module
 """

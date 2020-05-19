@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from __future__ import print_function
 from time import sleep
-from profile import * 
+from profile import *
 import random
 import os
 if os.name == "nt":
@@ -43,11 +43,11 @@ def test(string):
             break
         elif cha == string[header]:
             if os.name != "nt":
-                print(cha, end="")
+                print(cha, end="", flush=True)
             header += 1
         else:
             clear()
-            print(string)
+            print(string, flush=True)
             header = 0
         cha = getch()
         if os.name == "nt":
